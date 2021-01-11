@@ -23,9 +23,9 @@ module Onesky
         languages = get_languages_from_onesky!
         languages.each do |language|
           locale = language['custom_locale'] || to_rails_locale(language['code'])
-          if language['is_base_language'] && language['is_ready_to_publish']
+          if language['is_base_language']
             verify_base_locale!(locale)
-          else
+          elsif language['is_ready_to_publish']
             @onesky_locales << locale
           end
         end
