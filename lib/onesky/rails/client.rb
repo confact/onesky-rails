@@ -23,7 +23,7 @@ module Onesky
         languages = get_languages_from_onesky!
         languages.each do |language|
           locale = language['custom_locale'] || to_rails_locale(language['code'])
-          if (language['is_base_language'])
+          if language['is_base_language'] && language['is_ready_to_publish']
             verify_base_locale!(locale)
           else
             @onesky_locales << locale
@@ -50,7 +50,7 @@ module Onesky
       end
 
       def verify_base_locale!(locale)
-        if (locale != @base_locale.to_s)
+        if locale != @base_locale.to_s
           raise BaseLanguageNotMatchError, "The default locale (#{@base_locale.to_s}) of your Rails app doesn't match the base language (#{locale}) of the OneSky project"
         end
       end
